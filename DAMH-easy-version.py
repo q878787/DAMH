@@ -40,9 +40,8 @@ def get_config():
 class DAMHLoss(torch.nn.Module):
     def __init__(self, config, bit):
         super(DAMHLoss, self).__init__()
-        # 找上下界的概率点（基于数量获得比例）
-        self.y_p = 0.5
-        self.right = bit / 2
+        self.y_p = 0.5 #Centrosymmetric point
+        self.right = bit / 2  
         self.left = self.right / 2
         self.lowerBound = 0
         self.upperBound = bit / 2
