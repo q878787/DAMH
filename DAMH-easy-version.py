@@ -41,7 +41,7 @@ class DAMHLoss(torch.nn.Module):
     def __init__(self, config, bit):
         super(DAMHLoss, self).__init__()
         self.y_p = 0.5 #Centrosymmetric point
-        self.right = bit / 2  
+        self.right = bit / 8  
         self.left = self.right / 2
         self.lowerBound = 0
         self.upperBound = bit / 2
