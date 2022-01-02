@@ -22,4 +22,4 @@
 2021-12-23 07:24:11.237 | INFO     | __main__:train_val:165 - epoch:18 train_loss:0.496074602752924
 2021-12-23 07:24:47.765 | INFO     | __main__:train_val:165 - epoch:19 train_loss:0.39882794916629793
 2021-12-23 07:27:25.957 | INFO     | __main__:train_val:177 - epoch:19 MAP:0.804930422790851
-2021-12-23 07:28:01.743 | INFO     | __main__:train_val:165 - epoch:20 train_loss:0.34569485783576964
+2021-12-23 07:28:01.743 | INFO     | __main__:train_val:165 - epoch:20 train_loss:0.34569485783576964 
