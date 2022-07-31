@@ -11,6 +11,9 @@ pip install -r requirements.txt
 This project uses cifar10, NUSWIDE and Imagenet datasets. If you need to download, you can access  
 
 [test.ipynb](https://github.com/q878787/DAMH/blob/main/test.ipynb)  to download from the kaggle address. In addition，cifar10 is automatically downloaded by pytorch。
+
+In addition, Deepfashion from Kaggle(https://www.kaggle.com/datasets/hserdaraltan/deepfashion-inshop-clothes-retrieval)
+
 Note: please put the datasets in the dataset folder
 
 
@@ -41,18 +44,18 @@ python DAMH-easy-version.py
 
 # Mean Average Precision,48 bits
 
-| Algorithms | dataset     | map   |
-| ---------- | ----------- | ----- |
-| DAMH       | cifar10     | 0.807 |
-|            | nus_wide_21 | 0.822 |
-|            | imagenet    | 0.657 |
-|            | deepfashion | 0.499 |
-| DCH        | cifar10     | 0.793 |
-|            | nus_wide_21 | 0.71  |
-|            | imagenet    | 0.664 |
-|            | deepfashion | 0.483 |
-| DTSH       | cifar10     | 0.773 |
-|            | nus_wide_21 | 0.82  |
-|            | imagenet    | 0.644 |
-|            | deepfashion | 0.468 |
-|            |             |       |
+| Algorithms | dataset                | map   |
+| ---------- | ---------------------- | ----- |
+| DAMH       | cifar10                | 0.807 |
+|            | nus_wide_21            | 0.822 |
+|            | imagenet               | 0.657 |
+|            | deepfashion(RestNet18) | 0.499 |
+| DCH        | cifar10                | 0.793 |
+|            | nus_wide_21            | 0.71  |
+|            | imagenet               | 0.664 |
+|            | deepfashion(RestNet18) | 0.483 |
+| DTSH       | cifar10                | 0.773 |
+|            | nus_wide_21            | 0.82  |
+|            | imagenet               | 0.644 |
+|            | deepfashion(RestNet18) | 0.468 |
+|            |                        |       |
