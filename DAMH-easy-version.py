@@ -14,24 +14,32 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 def get_config():
     config = {
         "alpha": 0.1,
-        # "optimizer": {"type": optim.RMSprop, "optim_params": {"lr": 1e-5, "weight_decay": 10 ** -5}},
-        "optimizer": {"type": optim.Adam, "optim_params": {"lr": 1e-4, "weight_decay": 1e-5}},
-        "info": "[DAMH_low0_upperbd2_lrbd8_q01_b48_AlexNet_Adam_cifar-2]",
+        #"optimizer": {"type": optim.RMSprop, "optim_params": {"lr": 1e-5, "weight_decay": 10 ** -5}},
+        "optimizer": {"type": optim.Adam, "optim_params": {"lr": 1e-5, "weight_decay": 1e-5}},
+        #"info": "[DAMH_low0_upperbd4_lrbd8_q01_b16_AlexNet_Adam_nuswide-2]",
         "resize_size": 256,
         "crop_size": 224,
         "batch_size": 256,
         "net": AlexNet,
         # "net":ResNet,
-        "dataset": "cifar10",
+        #"dataset": "cifar10",
         # "dataset": "cifar10-2",
         #"dataset": "imagenet",
         #"dataset": "nuswide_21",
-        #"dataset":"nuswide_21_joblib"
-        "epoch": 29,
+        "dataset": "deepfashion",
+        #"dataset":"nuswide_21_joblib",
+        "epoch": 4000,
         "test_map": 7,
-        "save_path": "save/[DAMH_low0_upperbd2_lrbd8_q01_b48_AlexNet_Adam_cifar-2]",
+        #"save_path": "save/[DAMH_low0_upperbd4_lrbd8_q01_b16_AlexNet_Adam_nuswide-2]",
         "device": torch.device("cuda:0"),
         "bit_list": [48],
+        #DAMH-hyper-parameters
+        "y_p":0.5,
+        "right":6, #bit/8,
+        "lowerBound":0,
+        "upperBound":2, #bit/2
+        "percent":9/10,  #reduce interference
+        "version":"3"
     }
     config = config_dataset(config)
     return config
@@ -40,12 +48,12 @@ def get_config():
 class DAMHLoss(torch.nn.Module):
     def __init__(self, config, bit):
         super(DAMHLoss, self).__init__()
-        self.y_p = 0.5 #Centrosymmetric point
-        self.right = bit / 8  
+        self.y_p = config["y_p"]  #0.5 BasePoint
+        self.right = bit / config["right"]  #bit / 2
         self.left = self.right / 2
-        self.lowerBound = 0
-        self.upperBound = bit / 2
-        self.percent = 9 / 10
+        self.lowerBound = config["lowerBound"]  #0
+        self.upperBound = bit / config["upperBound"]  #bit / 4
+        self.percent = config["percent"]   #9 / 10
 
     def forward(self, u, y, ind, config):
         u = u.tanh()
@@ -68,9 +76,16 @@ class DAMHLoss(torch.nn.Module):
                 #DAMH_similar
                 meanS = torch.mean(similar).clamp(min=self.lowerBound, max=self.upperBound).item()
                 # percent can reduce interference of dissimilarMaxInner
-                dissimilarMaxInner = dissimilar_temp[int(len(dissimilar_temp) * self.percent):].mean().clamp(min=self.lowerBound,max=self.upperBound).item()
+                dissimilarMaxInner = dissimilar_temp[int(len(dissimilar_temp) * self.percent):].mean().item()#.clamp(min=self.lowerBound,max=self.upperBound).item()
+
                 #getting xp
                 BP = meanS - (self.upperBound - meanS) / self.upperBound * np.abs((meanS - dissimilarMaxInner))
+                # DAMH_dissimilar
+                meanDS = torch.mean(dissimilar).clamp(min=self.lowerBound, max=self.upperBound).item()
+                similarMinInner = similar_temp[int(len(similar_temp) * self.percent):].mean().item()#.clamp(min=self.lowerBound, max=self.upperBound).item()
+                #BP_ds = meanDS + meanDS / self.upperBound * np.abs((meanDS - similarMinInner))
+                BP_ds = similarMinInner
+
                 #getting hard or easy samples
                 similar_easy = similar[similar > BP]
                 similar_hard = similar[similar < BP]
@@ -82,9 +97,6 @@ class DAMHLoss(torch.nn.Module):
                 similar_hard_loss = self.DPSHLoss(True, f_similar_hard)
 
                 # DAMH_dissimilar
-                meanDS = torch.mean(dissimilar).clamp(min=self.lowerBound, max=self.upperBound).item()
-                similarMinInner = similar_temp[int(len(similar_temp) * self.percent):].mean().clamp(min=self.lowerBound, max=self.upperBound).item()
-                BP_ds = meanDS + meanDS / self.upperBound * np.abs((meanDS - similarMinInner))
                 dissimilar_easy = dissimilar[dissimilar < BP_ds]
                 dissimilar_hard = dissimilar[dissimilar > BP_ds]
                 a, c, d, g = self.calcParameter(BP_ds, self.y_p, self.left, self.right)

@@ -128,22 +128,33 @@ def train_val(config, bit):
 
         train_loss = train_loss / len(train_loader)
 
+        logger.info(f"epoch:{epoch} train_loss:{train_loss}")
         print("\b\b\b\b\b\b\b loss:%.3f" % (train_loss))
 
         if (epoch + 1) % config["test_map"] == 0:
-            Best_mAP = validate(config, Best_mAP, test_loader, dataset_loader, net, bit, epoch, num_dataset,logger)
+            # print("calculating test binary code......")
+            tst_binary, tst_label = compute_result(test_loader, net, device=device)
+            # print("calculating dataset binary code.......")\
+            trn_binary, trn_label = compute_result(dataset_loader, net, device=device)
+            # print("calculating map.......")
+            mAP = CalcTopMap(trn_binary.numpy(), tst_binary.numpy(), trn_label.numpy(), tst_label.numpy(),
+                             config["topK"])
+
+            logger.info(f"epoch:{epoch} MAP:{mAP}")
+            if mAP > Best_mAP:
+                Best_mAP = mAP
+                if "save_path" in config:
+                    if not os.path.exists(config["save_path"]):
+                        os.makedirs(config["save_path"])
+                    print("save in ", config["save_path"])
+                    # torch.save(net.state_dict(),
+                    #           os.path.join(config["save_path"], config["info"] + "-" + str(mAP) + "-model.pt"))
+            print("%s epoch:%d, bit:%d, dataset:%s, MAP:%.3f, Best MAP: %.3f" % (
+                config["info"], epoch + 1, bit, config["dataset"], mAP, Best_mAP))
 
 
 if __name__ == "__main__":
     config = get_config()
     print(config)
     for bit in config["bit_list"]:
-        now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        opt = f"{config['optimizer']['type']}".split(".")[-1].split("'")[0]
-        #str = f"[HashNet_low{config['lowerBound']}_upperbd{config['upperBound']}_lrbd{config['right']}_bit{bit}_AlexNet_{opt}_{config['dataset']}]"
-        #config["info"] = str
-        str = config["info"]
-        config["save_path"] = "save/"+str+"/"+now+"/"
-        config["pr_curve_path"] = "save/"+str+"/"+now+"/" #+f"/{str}_{config['dataset']}_{bit}"#.json
-
         train_val(config, bit)
