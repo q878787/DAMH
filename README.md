@@ -49,13 +49,13 @@ python DAMH-easy-version.py
 | DAMH       | cifar10                | 0.807 |
 |            | nus_wide_21            | 0.822 |
 |            | imagenet               | 0.657 |
-|            | deepfashion(RestNet18) | 0.499 |
+|            | deepfashion(RestNet18) | 0.551 |
 | DCH        | cifar10                | 0.793 |
 |            | nus_wide_21            | 0.71  |
 |            | imagenet               | 0.664 |
-|            | deepfashion(RestNet18) | 0.483 |
+|            | deepfashion(RestNet18) | 0.513 |
 | DTSH       | cifar10                | 0.773 |
 |            | nus_wide_21            | 0.82  |
 |            | imagenet               | 0.644 |
-|            | deepfashion(RestNet18) | 0.468 |
+|            | deepfashion(RestNet18) | 0.498 |
 |            |                        |       |
