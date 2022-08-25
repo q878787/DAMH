@@ -47,15 +47,15 @@ python DAMH-easy-version.py
 | Algorithms | dataset                | map   |
 | ---------- | ---------------------- | ----- |
 | DAMH       | cifar10                | 0.807 |
-|            | nus_wide_21            | 0.822 |
-|            | imagenet               | 0.657 |
+|            | nus_wide               | 0.822 |
+|            | imagenet               | 0.658 |
 |            | deepfashion(RestNet18) | 0.551 |
 | DCH        | cifar10                | 0.793 |
-|            | nus_wide_21            | 0.71  |
-|            | imagenet               | 0.664 |
+|            | nus_wide               | 0.71  |
+|            | imagenet               | 0.637 |
 |            | deepfashion(RestNet18) | 0.513 |
-| DTSH       | cifar10                | 0.773 |
-|            | nus_wide_21            | 0.82  |
-|            | imagenet               | 0.644 |
+| DTSH       | cifar10                | 0.774 |
+|            | nus_wide               | 0.82  |
+|            | imagenet               | 0.611 |
 |            | deepfashion(RestNet18) | 0.498 |
 |            |                        |       |
