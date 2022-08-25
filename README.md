@@ -30,15 +30,15 @@ python DAMH-easy-version.py
 
 1.The experimental results of DAMH(48bit) and comparison methods on the Cifar10 dataset under three evaluation metrics
 
-![cifar](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202207312158496.png)
+![cifar](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202208252307179.png)
 
 2.The experimental results of DAMH(48bit) and comparison methods on the NUSWIDE dataset under three evaluation metrics
 
-![nuswide](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202207312159256.png)
+![nuswide](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202208252307442.png)
 
 3.The experimental results of DAMH(48bit) and comparison methods on the Imagenet dataset under three evaluation metrics
 
-![imagenet](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202207312159543.png)
+![imagenet](https://raw.githubusercontent.com/q878787/images/main/markdownImg/202208252307808.png)
 
 
 

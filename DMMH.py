@@ -86,9 +86,8 @@ class DMMHLoss(torch.nn.Module):
         else:
             loss1 = 0
 
-        loss2 = config["lambda"] * (u - u.sign()).pow(2).mean()
 
-        return loss1 + loss2
+        return loss1
 
 
 def train_val(config, bit):
